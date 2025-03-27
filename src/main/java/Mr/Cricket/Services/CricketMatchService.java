@@ -6,7 +6,7 @@ import java.util.Map;
 
 @Service
 public class CricketMatchService {
-    private static final String API_URL = "https://api.cricapi.com/v1/matches?apikey=5d45a30d-63c7-405c-a2c8-c2ae266de0b6";
+    private static final String API_URL = "https://api.cricapi.com/v1/matches?apikey=5d45a30d-63c7-405c-a2c8-c2ae266de0";
 
     private final RestTemplate restTemplate;
 
