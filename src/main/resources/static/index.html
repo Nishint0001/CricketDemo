@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Montserrat, sans-serif !important;
+            background-color: #222;
+            color: white;
+        }
+        .single-match {
+            max-height: 300px;
+            height: 100%;
+            margin-bottom: 20px;
+        }
+        .match-box {
+            padding: 20px;
+            background: #333;
+            border-radius: 15px;
+        }
+        .contest-league {
+            display: flex;
+            justify-content: space-between;
+        }
+        .match-alltext {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 20px 0;
+        }
+        .matches-detail {
+            position: relative;
+        }
+        .match-scores {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .league-background-image {
+            position: relative;
+            width: 100%;
+            max-height: 200px;
+        }
+        .league-background-image img {
+            width: 100%;
+            border-radius: 15px;
+        }
+        .team-left, .team-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .team-logo img {
+            width: 32px;
+            height: 32px;
+        }
+        .match-list {
+            margin-top: 20px;
+        }
+        button {
+            background: #ffcc00;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #ff9900;
+        }
+    </style>
+</head>
+<body>
+
+<header>Casino Sports Matches</header>
+
+<main>
+    <section class="top-match-blocks" id="matchList">
+        <!-- Matches will be loaded here dynamically -->
+    </section>
+</main>
+
+<button onclick="fetchMatches()">Get Upcoming Matches</button>
+
+<footer></footer>
+
+<script>
+    async function fetchMatches() {
+        try {
+            let response = await fetch('/cricket/upcoming');
+            let data = await response.json();
+
+            let matchList = document.getElementById("matchList");
+            matchList.innerHTML = ""; // Clear previous matches
+
+            data.data.forEach(match => {
+                let matchElement = `
+                    <div class="single-match">
+                        <div class="match-box">
+                            <div class="league-background-image">
+                                <img src="https://api-g-c7818b61-607.sptpub.com/api/v1/promo/banner/brand/2402912577089839104/image/2512594806098767873">
+                            </div>
+                            <div class="match-alltext">
+                                <div class="contest-league">
+                                    <div class="match-league-name">
+                                        <span>${match.name}</span>
+                                    </div>
+                                    <div class="match-status">
+                                        <span>${match.status}</span>
+                                    </div>
+                                </div>
+                                <div class="matches-detail">
+                                    <div class="match-teams">
+                                        <div class="team-left">
+                                            <div class="team-name">${match.teams[0] || "TBD"}</div>
+                                        </div>
+                                        <div class="team-right">
+                                            <div class="team-name">${match.teams[1] || "TBD"}</div>
+                                        </div>
+                                    </div>
+                                    <div class="match-scores">
+                                        <div>Venue: ${match.venue}</div>
+                                        <div>Date: ${match.date}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                matchList.innerHTML += matchElement;
+            });
+        } catch (error) {
+            console.error("Error fetching matches:", error);
+        }
+    }
+</script>
+
+</body>
+</html>

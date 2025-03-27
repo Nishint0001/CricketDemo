@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot + HTML</title>
+</head>
+<body>
+<h2>Create User</h2>
+<input type="text" id="name" placeholder="Enter Name">
+<input type="email" id="email" placeholder="Enter Email">
+<button onclick="createUser()">Create User</button>
+
+<h2>All Users</h2>
+<button onclick="fetchUsers()">Get All Users</button>
+<ul id="userList"></ul>
+
+<script>
+    async function createUser() {
+        let user = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value
+        };
+
+        let response = await fetch('/user/create', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        });
+
+        let result = await response.json();
+        alert("User Created: " + JSON.stringify(result));
+    }
+
+    async function fetchUsers() {
+        let response = await fetch('/user/all');
+        let users = await response.json();
+
+        let userList = document.getElementById("userList");
+        userList.innerHTML = "";
+        users.forEach(user => {
+            let li = document.createElement("li");
+            li.textContent = `${user.name} - ${user.email}`;
+            userList.appendChild(li);
+        });
+    }
+</script>
+</body>
+</html>
