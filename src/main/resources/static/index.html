@@ -3,83 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino</title>
+    <title>Casino Sports</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
             margin: 0;
-            font-family: Montserrat, sans-serif !important;
-            background-color: #222;
-            color: white;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2b2b2b 100%);
+            color: #fff;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .single-match {
-            max-height: 300px;
-            height: 100%;
-            margin-bottom: 20px;
+            max-height: 320px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .single-match:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
         .match-box {
-            padding: 20px;
             background: #333;
             border-radius: 15px;
+            padding: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .league-background-image {
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .league-background-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .single-match:hover .league-background-image img {
+            transform: scale(1.05);
+        }
+        .match-alltext {
+            padding: 15px;
         }
         .contest-league {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .match-alltext {
-            color: white;
-            text-decoration: none;
+        .match-league-name span {
             font-size: 18px;
             font-weight: 600;
-            padding: 20px 0;
+            color: #ffcc00;
         }
-        .matches-detail {
-            position: relative;
-        }
-        .match-scores {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size: 16px;
+        .match-status span {
+            font-size: 14px;
+            color: #bbb;
+            text-transform: uppercase;
         }
         .match-teams {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .league-background-image {
-            position: relative;
-            width: 100%;
-            max-height: 200px;
-        }
-        .league-background-image img {
-            width: 100%;
-            border-radius: 15px;
+            margin-bottom: 10px;
         }
         .team-left, .team-right {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .team-logo img {
-            width: 32px;
-            height: 32px;
-        }
-        .match-list {
-            margin-top: 20px;
-        }
-        button {
-            background: #ffcc00;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
+        .team-name {
             font-size: 16px;
-            border-radius: 5px;
-            margin-top: 20px;
+            font-weight: 600;
         }
-        button:hover {
+        .match-scores {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #ddd;
+        }
+        .match-scores div {
+            background: #444;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        button.fetch-matches {
+            display: block;
+            margin: 30px auto;
+            background: #ffcc00;
+            color: #111;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        button.fetch-matches:hover {
             background: #ff9900;
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #777;
         }
     </style>
 </head>
@@ -93,9 +138,9 @@
     </section>
 </main>
 
-<button onclick="fetchMatches()">Get Upcoming Matches</button>
+<button class="fetch-matches" onclick="fetchMatches()">Get Upcoming Matches</button>
 
-<footer></footer>
+<footer>© 2025 Casino Sports. All Rights Reserved.</footer>
 
 <script>
     async function fetchMatches() {
@@ -108,10 +153,10 @@
 
             data.data.forEach(match => {
                 let matchElement = `
-                    <div class="single-match">
+                    <div class="single-match" onclick="openMatchDetails('${match.id || match.name}')">
                         <div class="match-box">
                             <div class="league-background-image">
-                                <img src="https://api-g-c7818b61-607.sptpub.com/api/v1/promo/banner/brand/2402912577089839104/image/2512594806098767873">
+                                <img src="https://api-g-c7818b61-607.sptpub.com/api/v1/promo/banner/brand/2402912577089839104/image/2512594806098767873" alt="Match Banner">
                             </div>
                             <div class="match-alltext">
                                 <div class="contest-league">
@@ -144,6 +189,12 @@
         } catch (error) {
             console.error("Error fetching matches:", error);
         }
+    }
+
+    function openMatchDetails(matchId) {
+        // Placeholder for opening details - replace with your logic
+        alert(`Opening details for match: ${matchId}`);
+        // Example: window.location.href = `/match-details.html?id=${matchId}`;
     }
 </script>
 
